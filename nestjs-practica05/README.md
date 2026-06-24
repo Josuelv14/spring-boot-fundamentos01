@@ -283,3 +283,80 @@ docker logs postgres-dev
 docker exec -it postgres-dev psql -U ups -d devdb_nest
 ```
 
+## Práctica 7: Manejo Global de Errores y Excepciones
+
+En esta práctica se implementa un filtro global de excepciones que convierte todos los errores del backend en un formato uniforme.
+
+### Qué se agregó
+
+- `src/core/exceptions/base/application.exception.ts`
+- `src/core/exceptions/domain/not-found.exception.ts`
+- `src/core/exceptions/domain/conflict.exception.ts`
+- `src/core/exceptions/domain/bad-request.exception.ts`
+- `src/core/exceptions/interfaces/error-response.interface.ts`
+- `src/core/exceptions/filters/all-exceptions.filter.ts`
+- Registro del filtro global en `src/main.ts`
+
+### Formato único de error
+
+Todas las respuestas de error usan ahora el siguiente contrato:
+
+```json
+{
+  "timestamp": "2026-06-24T15:07:20.967Z",
+  "status": 404,
+  "error": "Not Found",
+  "message": "User not found",
+  "path": "/api/users/999",
+  "details": {
+    "name": "El nombre es obligatorio"
+  }
+}
+```
+
+El campo `details` se incluye cuando existen errores de validación y contiene los mensajes por campo.
+
+### Capturas para evidencia
+
+#### Error por recurso inexistente
+
+- Ruta: `GET /api/products/999`
+- Respuesta esperada: `404 Not Found`
+
+> Captura de pantalla: ___________________________
+
+#### Error por recurso duplicado
+
+- Ruta: `POST /api/products`
+- Body con nombre duplicado
+- Respuesta esperada: `409 Conflict`
+
+> Captura de pantalla: ___________________________
+
+#### Error por validación de DTO
+
+- Ruta: `POST /api/products`
+- Body inválido:
+
+```json
+{
+  "name": "",
+  "price": -5,
+  "stock": -1
+}
+```
+
+- Respuesta esperada: `400 Bad Request`
+
+> Captura de pantalla: ___________________________
+
+#### Validación de CRUD de productos
+
+- Crear producto válido
+- Actualizar producto válido
+- Eliminar producto (soft delete)
+- Verificar que `GET /api/products` no devuelve productos eliminados
+
+> Captura de pantalla: ___________________________
+
+

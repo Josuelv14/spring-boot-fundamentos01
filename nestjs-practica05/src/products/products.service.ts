@@ -1,6 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ConflictException } from '../core/exceptions/domain/conflict.exception';
+import { NotFoundException } from '../core/exceptions/domain/not-found.exception';
+import { BadRequestException } from '../core/exceptions/domain/bad-request.exception';
 import { CreateProductDto } from './dtos/create-product.dto';
 import { PartialUpdateProductDto } from './dtos/partial-update-product.dto';
 import { UpdateProductDto } from './dtos/update-product.dto';
@@ -33,6 +36,14 @@ export class ProductsService {
   }
 
   async create(dto: CreateProductDto): Promise<ProductResponseDto> {
+    const exists = await this.productRepository.findOne({
+      where: { name: dto.name, deleted: false },
+    });
+
+    if (exists) {
+      throw new ConflictException('Product name already registered');
+    }
+
     const model = ProductMapper.toModelFromDto(dto);
     const entity = ProductMapper.toEntityFromModel(model);
     const savedEntity = await this.productRepository.save(entity);

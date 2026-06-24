@@ -1,6 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ConflictException } from '../core/exceptions/domain/conflict.exception';
+import { NotFoundException } from '../core/exceptions/domain/not-found.exception';
+import { BadRequestException } from '../core/exceptions/domain/bad-request.exception';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { PartialUpdateUserDto } from './dtos/partial-update-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
@@ -33,6 +36,14 @@ export class UsersService {
   }
 
   async create(dto: CreateUserDto): Promise<UserResponseDto> {
+    const exists = await this.userRepository.exist({
+      where: { email: dto.email, deleted: false },
+    });
+
+    if (exists) {
+      throw new ConflictException('Email already registered');
+    }
+
     const model = UserMapper.toModelFromDto(dto);
     const entity = UserMapper.toEntityFromModel(model);
     const savedEntity = await this.userRepository.save(entity);
