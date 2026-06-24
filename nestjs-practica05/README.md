@@ -185,6 +185,49 @@ curl -X PATCH http://localhost:3000/api/products/1 \
 curl -X DELETE http://localhost:3000/api/products/1
 ```
 
+## Práctica 6: Validación de DTOs y control de entrada
+
+En esta práctica se incorpora validación en los DTOs usando `class-validator` y `class-transformer`, y se activa `ValidationPipe` de NestJS para validar los datos antes de llegar a los servicios.
+
+### Validaciones implementadas
+
+- `CreateUserDto`, `UpdateUserDto`, `PartialUpdateUserDto`
+- `CreateProductDto`, `UpdateProductDto`, `PartialUpdateProductDto`
+- Reglas de nombre, email, password, precio y stock
+- `whitelist: true`, `forbidNonWhitelisted: true`, `transform: true`
+
+### Evidencias
+
+#### 1. Error de validación al crear producto inválido
+
+`POST /api/products`
+
+Body inválido:
+
+```json
+{
+  "name": "",
+  "price": -5,
+  "stock": -1
+}
+```
+
+Respuesta esperada: `400 Bad Request`
+
+> Captura de pantalla: ___________________________
+
+#### 2. CRUD de productos validado correctamente
+
+Pruebas realizadas:
+
+- crear producto válido
+- actualizar producto válido
+- actualizar parcialmente con campos válidos
+- eliminar producto (soft delete)
+- `GET /api/products` no devuelve productos eliminados
+
+> Captura de pantalla: ___________________________
+
 ## Características
 
 ✅ **CRUD Completo** - Create, Read, Update, Partial Update, Delete  
