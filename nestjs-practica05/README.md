@@ -215,6 +215,7 @@ Body inválido:
 Respuesta esperada: `400 Bad Request`
 
 > Captura de pantalla: ___________________________
+![Error de Validación DTO](anexos/primer%20error.png)
 
 #### 2. CRUD de productos validado correctamente
 
@@ -227,6 +228,8 @@ Pruebas realizadas:
 - `GET /api/products` no devuelve productos eliminados
 
 > Captura de pantalla: ___________________________
+
+![Validación CRUD Productos](anexos/captura%202.png)
 
 ## Características
 
@@ -324,6 +327,7 @@ El campo `details` se incluye cuando existen errores de validación y contiene l
 - Respuesta esperada: `404 Not Found`
 
 > Captura de pantalla: ___________________________
+![Error Producto Duplicado](anexos/error%202%20p7.png)
 
 #### Error por recurso duplicado
 
@@ -332,6 +336,7 @@ El campo `details` se incluye cuando existen errores de validación y contiene l
 - Respuesta esperada: `409 Conflict`
 
 > Captura de pantalla: ___________________________
+![Error Producto Inexistente](anexos/error%203%20p7.png)
 
 #### Error por validación de DTO
 
@@ -349,6 +354,7 @@ El campo `details` se incluye cuando existen errores de validación y contiene l
 - Respuesta esperada: `400 Bad Request`
 
 > Captura de pantalla: ___________________________
+![Evidencia Práctica 7](anexos/cap2%20p7.png)
 
 #### Validación de CRUD de productos
 
@@ -359,4 +365,5 @@ El campo `details` se incluye cuando existen errores de validación y contiene l
 
 > Captura de pantalla: ___________________________
 
+![Error Producto Inexistente](anexos/error%204%20p7.png)
 
