@@ -7,25 +7,21 @@ import ec.edu.ups.icc.fundamentos01.products.dto.ProductResponseDto;
 import ec.edu.ups.icc.fundamentos01.products.dto.UpdateProductDto;
 import ec.edu.ups.icc.fundamentos01.products.mappers.ProductMapper;
 import ec.edu.ups.icc.fundamentos01.products.models.ProductModel;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
-public class ProductsServiceImpl implements ProductsService {
+public class ProductsServiceImpl {
 
     private final List<ProductModel> products = new ArrayList<>();
     private Long currentId = 1L;
 
-    @Override
     public List<ProductResponseDto> findAll() {
         return products.stream()
                 .map(ProductMapper::toResponse)
                 .toList();
     }
 
-    @Override
     public Object findOne(Long id) {
         return products.stream()
                 .filter(product -> product.getId().equals(id))
@@ -34,7 +30,6 @@ public class ProductsServiceImpl implements ProductsService {
                 .orElseGet(() -> new ErrorResponseDto("Product not found"));
     }
 
-    @Override
     public ProductResponseDto create(CreateProductDto dto) {
         ProductModel product = ProductMapper.toModel(dto);
         product.setId(currentId);
@@ -43,7 +38,6 @@ public class ProductsServiceImpl implements ProductsService {
         return ProductMapper.toResponse(product);
     }
 
-    @Override
     public Object update(Long id, UpdateProductDto dto) {
         ProductModel product = products.stream()
                 .filter(item -> item.getId().equals(id))
@@ -60,7 +54,6 @@ public class ProductsServiceImpl implements ProductsService {
         return ProductMapper.toResponse(product);
     }
 
-    @Override
     public Object partialUpdate(Long id, PartialUpdateProductDto dto) {
         ProductModel product = products.stream()
                 .filter(item -> item.getId().equals(id))
@@ -84,7 +77,6 @@ public class ProductsServiceImpl implements ProductsService {
         return ProductMapper.toResponse(product);
     }
 
-    @Override
     public Object delete(Long id) {
         boolean removed = products.removeIf(product -> product.getId().equals(id));
         if (!removed) {

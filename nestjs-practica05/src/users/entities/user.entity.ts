@@ -1,25 +1,35 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { ProductEntity } from '../../products/entities/product.entity';
 
 @Entity('users')
 export class UserEntity {
   @PrimaryGeneratedColumn('increment')
-  id: number;
+  id!: number;
 
   @CreateDateColumn({ type: 'timestamp' })
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn({ type: 'timestamp' })
-  updatedAt: Date;
+  updatedAt!: Date;
 
   @Column({ default: false })
-  deleted: boolean;
+  deleted!: boolean;
 
   @Column({ type: 'varchar', length: 150, nullable: false })
-  name: string;
+  name!: string;
 
   @Column({ type: 'varchar', length: 150, unique: true, nullable: false })
-  email: string;
+  email!: string;
 
   @Column({ type: 'varchar', nullable: false })
-  passwordHash: string;
+  passwordHash!: string;
+
+  // ==================== RELACIÓN BIDIRECCIONAL ====================
+  /**
+   * Relación One-to-Many con ProductEntity
+   * Esta relación existe para consistencia del modelo y documentación
+   * NO debe usarse para consultas desde el servicio - usar ProductRepository en su lugar
+   */
+  @OneToMany(() => ProductEntity, (product) => product.owner, { lazy: true })
+  products!: ProductEntity[];
 }

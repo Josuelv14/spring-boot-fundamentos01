@@ -40,4 +40,26 @@ export class ProductMapper {
     response.stock = model.stock;
     return response;
   }
+
+  static toResponseFromEntity(entity: ProductEntity): ProductResponseDto {
+    const response = new ProductResponseDto();
+    response.id = entity.id;
+    response.name = entity.name;
+    response.price = Number(entity.price);
+    response.stock = entity.stock;
+    response.description = entity.description;
+    response.user = {
+      id: entity.owner.id,
+      name: entity.owner.name,
+      email: entity.owner.email,
+    };
+    response.categories = entity.categories?.map((category) => ({
+      id: category.id,
+      name: category.name,
+      description: category.description,
+    })) ?? [];
+    response.createdAt = entity.createdAt;
+    response.updatedAt = entity.updatedAt;
+    return response;
+  }
 }

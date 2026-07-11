@@ -9,6 +9,11 @@ import { ProductsService } from './products.service';
 export class ProductsController {
   constructor(private readonly service: ProductsService) {}
 
+  @Post()
+  create(@Body() dto: CreateProductDto): Promise<ProductResponseDto> {
+    return this.service.create(dto);
+  }
+
   @Get()
   findAll(): Promise<ProductResponseDto[]> {
     return this.service.findAll();
@@ -17,11 +22,6 @@ export class ProductsController {
   @Get(':id')
   findOne(@Param('id') id: string): Promise<ProductResponseDto> {
     return this.service.findOne(Number(id));
-  }
-
-  @Post()
-  create(@Body() dto: CreateProductDto): Promise<ProductResponseDto> {
-    return this.service.create(dto);
   }
 
   @Put(':id')
@@ -40,5 +40,15 @@ export class ProductsController {
   @Delete(':id')
   delete(@Param('id') id: string): Promise<void> {
     return this.service.delete(Number(id));
+  }
+
+  @Get('owner/:userId')
+  findByOwnerId(@Param('userId') userId: string): Promise<ProductResponseDto[]> {
+    return this.service.findByOwnerId(Number(userId));
+  }
+
+  @Get('category/:categoryId')
+  findByCategoryId(@Param('categoryId') categoryId: string): Promise<ProductResponseDto[]> {
+    return this.service.findByCategoryId(Number(categoryId));
   }
 }

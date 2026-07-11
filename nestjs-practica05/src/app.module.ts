@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { ProductsModule } from './products/products.module';
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
   imports: [
@@ -9,14 +10,15 @@ import { ProductsModule } from './products/products.module';
       type: 'postgres',
       host: 'localhost',
       port: 5432,
-      username: 'ups',
-      password: 'ups123',
-      database: 'devdb_nest',
+      username: 'postgres',
+      password: '1234',
+      database: 'postgres',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
       logging: true,
     }),
     UsersModule,
+    CategoriesModule,
     ProductsModule,
   ],
 })

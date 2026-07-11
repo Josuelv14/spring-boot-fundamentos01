@@ -90,7 +90,7 @@ src/
 | GET | `/api/users/:id` | Obtener usuario por ID |
 | POST | `/api/users` | Crear nuevo usuario |
 | PUT | `/api/users/:id` | Actualizar usuario completo |
-| PATCH | `/api/users/:id` | Actualizar usuario parcial |
+| PATCH | `/api/users/:id` | Actualizar usuario parcial (nombre, email y contraseña) |
 | DELETE | `/api/users/:id` | Eliminar usuario (soft delete) |
 
 ### Products

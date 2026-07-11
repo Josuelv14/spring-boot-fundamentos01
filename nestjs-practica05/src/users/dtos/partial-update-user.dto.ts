@@ -12,4 +12,9 @@ export class PartialUpdateUserDto {
   @IsEmail({}, { message: 'Debe ingresar un email válido' })
   @MaxLength(150, { message: 'El email no debe superar los 150 caracteres' })
   email?: string;
+
+  @IsOptional()
+  @IsString()
+  @MinLength(8, { message: 'La contraseña debe tener al menos 8 caracteres' })
+  password?: string;
 }
