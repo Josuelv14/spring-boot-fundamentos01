@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: fundamentos01-api
+    env: java
+    plan: free
+    buildCommand: ./gradlew build -x test
+    startCommand: java -Xms256m -Xmx512m -jar build/libs/app.jar
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: DATABASE_URL
+        value: jdbc:postgresql://localhost:5432/fundamentos01_db
+      - key: DB_USERNAME
+        value: postgres
+      - key: DB_PASSWORD
+        value: postgres
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRATION
+        value: 1800000
+      - key: DDL_AUTO
+        value: validate
+      - key: SHOW_SQL
+        value: false
+      - key: LOG_LEVEL
+        value: INFO

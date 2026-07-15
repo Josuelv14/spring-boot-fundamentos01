@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: fundamentos01-postgres
+    environment:
+      POSTGRES_DB: fundamentos01_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d fundamentos01_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fundamentos01-api
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DATABASE_URL: jdbc:postgresql://postgres:5432/fundamentos01_db
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      JWT_SECRET: super-secure-jwt-key-with-more-than-thirty-two-characters-pwp67
+      JWT_EXPIRATION: 1800000
+      JWT_REFRESH_EXPIRATION: 604800000
+      DDL_AUTO: update
+      SHOW_SQL: false
+      LOG_LEVEL: INFO
+    ports:
+      - "8080:8080"
+    restart: always
+
+volumes:
+  postgres_data:
